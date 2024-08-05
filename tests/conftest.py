@@ -67,3 +67,29 @@ async def user(session: AsyncSession):
     user.clean_password = password
 
     return user
+
+
+@pytest.fixture
+async def other_user(session: AsyncSession):
+    password = 'passwd'
+    user = UserFactory(password=security.get_password_hash(password))
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+
+    user.clean_password = password
+
+    return user
+
+
+@pytest.fixture
+def token(client, user):
+    response = client.post(
+        '/auth/token',
+        data={
+            'username': user.email,
+            'password': user.clean_password
+        }
+    )
+
+    return response.json()['access_token']

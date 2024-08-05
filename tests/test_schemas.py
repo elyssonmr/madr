@@ -16,7 +16,7 @@ cases = [
 
 
 @pytest.mark.parametrize(('value', 'expected'), cases)
-def test_sanitize_name_should_return_sanitazed_name(value, expected):
+def test_sanitize_name_should_return_sanitized_name(value, expected):
     result = sanitize_name(value)
 
     assert result == expected

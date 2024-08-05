@@ -15,6 +15,10 @@ def sanitize_name(value: str):
     return result.strip(string.punctuation).strip().lower()
 
 
+class MessageSchema(BaseModel):
+    message: str
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -24,6 +28,7 @@ class UserSchema(BaseModel):
     username: Annotated[str, AfterValidator(sanitize_name)]
     email: EmailStr
     password: str
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserPublic(BaseModel):
