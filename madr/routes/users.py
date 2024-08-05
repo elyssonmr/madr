@@ -51,12 +51,11 @@ async def update_user(
     session: T_Session,
     user: UserSchema,
     user_id: int,
-    current_user: T_CurrentUser
+    current_user: T_CurrentUser,
 ):
     if user_id != current_user.id:
         raise HTTPException(
-            status_code=HTTPStatus.FORBIDDEN,
-            detail='Not enough permission'
+            status_code=HTTPStatus.FORBIDDEN, detail='Not enough permission'
         )
 
     current_user.username = user.username
@@ -69,8 +68,7 @@ async def update_user(
         await session.refresh(current_user)
     except IntegrityError:
         raise HTTPException(
-            status_code=HTTPStatus.CONFLICT,
-            detail='Resource already exists'
+            status_code=HTTPStatus.CONFLICT, detail='Resource already exists'
         )
 
     return current_user
@@ -82,8 +80,7 @@ async def delete_user(
 ):
     if user_id != current_user.id:
         raise HTTPException(
-            status_code=HTTPStatus.FORBIDDEN,
-            detail='Not enough permission'
+            status_code=HTTPStatus.FORBIDDEN, detail='Not enough permission'
         )
 
     await session.delete(current_user)

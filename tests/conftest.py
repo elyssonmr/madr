@@ -86,10 +86,19 @@ async def other_user(session: AsyncSession):
 def token(client, user):
     response = client.post(
         '/auth/token',
-        data={
-            'username': user.email,
-            'password': user.clean_password
-        }
+        data={'username': user.email, 'password': user.clean_password},
     )
 
     return response.json()['access_token']
+
+
+@pytest.fixture
+def invalid_token():
+    data = {'sub': 'invalid_username@email.com'}
+    return security.create_access_token(data)
+
+
+@pytest.fixture
+def no_valid_field_token():
+    data = {'iss': 'invalid_username@email.com'}
+    return security.create_access_token(data)
