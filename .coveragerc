@@ -1,0 +1,3 @@
+[run]
+omit = madr/database.py
+concurrency = thread,gevent

@@ -1,0 +1,15 @@
+services:
+  madr_database:
+    image: 'postgres:16-alpine'
+    container_name: 'madr_db'
+    ports:
+      - '5432:5432'
+    environment:
+      - 'POSTGRES_USER=madr'
+      - 'POSTGRES_DB=madr'
+      - 'POSTGRES_PASSWORD=madr_passwd'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
