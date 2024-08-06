@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from sqlalchemy import func
-from sqlalchemy.orm import Mapped, mapped_column, registry
+from sqlalchemy import ForeignKey, func
+from sqlalchemy.orm import Mapped, mapped_column, registry, relationship
 from zoneinfo import ZoneInfo
 
 table_registry = registry()
@@ -34,3 +34,19 @@ class Author(BaseModel):
     __tablename__ = 'authors'
 
     name: Mapped[str] = mapped_column(unique=True)
+
+    books: Mapped[list['Book']] = relationship(
+        init=False, back_populates='author'
+    )
+
+
+@table_registry.mapped_as_dataclass
+class Book(BaseModel):
+    __tablename__ = 'books'
+
+    year: Mapped[int]
+    title: Mapped[str] = mapped_column(unique=True)
+
+    author_id: Mapped[int] = mapped_column(ForeignKey('authors.id'))
+
+    author: Mapped[Author] = relationship(init=False, back_populates='books')

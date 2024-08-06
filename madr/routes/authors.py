@@ -102,7 +102,7 @@ async def get_authors(
     session: T_Session,
     name: str | None = None,
     offset: int | None = 0,
-    limit: int | None = 20
+    limit: int | None = 20,
 ):
     query = select(Author)
     if name:

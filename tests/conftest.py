@@ -11,7 +11,7 @@ from testcontainers.postgres import PostgresContainer
 from madr import security
 from madr.app import app
 from madr.database import get_session
-from madr.models import Author, User, table_registry
+from madr.models import Author, Book, User, table_registry
 
 
 class UserFactory(factory.Factory):
@@ -30,6 +30,15 @@ class AuthorFactory(factory.Factory):
         model = Author
 
     name = factory.Sequence(lambda n: f'author{n}')
+
+
+class BookFactory(factory.Factory):
+    class Meta:
+        model = Book
+
+    year = factory.Sequence(lambda n: 1900 + n)
+    title = factory.Sequence(lambda n: f'title{n}')
+    author_id = factory.Sequence(lambda n: n)
 
 
 @pytest.fixture(scope='session')
@@ -84,6 +93,26 @@ async def author(session: AsyncSession):
     await session.refresh(author)
 
     return author
+
+
+@pytest.fixture
+async def book(session: AsyncSession, author):
+    book = BookFactory(author_id=author.id)
+    session.add(book)
+    await session.commit()
+    await session.refresh(book)
+
+    return book
+
+
+@pytest.fixture
+async def other_book(session: AsyncSession, author):
+    book = BookFactory(author_id=author.id)
+    session.add(book)
+    await session.commit()
+    await session.refresh(book)
+
+    return book
 
 
 @pytest.fixture

@@ -49,3 +49,25 @@ class AuthorPublic(AuthorSchema):
 
 class AuthorList(BaseModel):
     authors: list[AuthorPublic]
+
+
+class BookSchema(BaseModel):
+    year: int
+    title: Annotated[str, AfterValidator(sanitize_name)]
+    author_id: int
+    model_config = ConfigDict(from_attributes=True)
+
+
+class BookPublic(BookSchema):
+    id: int
+
+
+class BookList(BaseModel):
+    books: list[BookPublic]
+
+
+class BookUpdateSchema(BaseModel):
+    year: int | None = None
+    title: Annotated[str, AfterValidator(sanitize_name)] | None = None
+    author_id: int | None = None
+    model_config = ConfigDict(from_attributes=True)

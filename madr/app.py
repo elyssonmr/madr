@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
-from madr.routes import auth, authors, users
+from madr.routes import auth, authors, books, users
 
 app = FastAPI()
 
@@ -14,3 +14,4 @@ def hello():
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(authors.router)
+app.include_router(books.router)

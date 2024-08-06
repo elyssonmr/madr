@@ -87,10 +87,7 @@ def test_get_author_should_return_author(client, author):
     response = client.get(f'/authors/{author.id}')
 
     assert response.status_code == HTTPStatus.OK
-    assert response.json() == {
-        'id': author.id,
-        'name': author.name
-    }
+    assert response.json() == {'id': author.id, 'name': author.name}
 
 
 def test_get_author_should_return_not_found(client):
@@ -163,7 +160,6 @@ async def test_get_authors_should_return_limited_authors(client, session):
 
 
 def test_get_authors_should_return_empty_authors(client):
-
     response = client.get('/authors')
 
     assert response.status_code == HTTPStatus.OK
