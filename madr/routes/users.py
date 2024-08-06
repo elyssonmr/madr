@@ -29,7 +29,7 @@ async def create_account(session: T_Session, user: UserSchema):
     if user_db:
         field = 'Username' if user_db.username == user.username else 'Email'
         raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST,
+            status_code=HTTPStatus.CONFLICT,
             detail=f'{field} already exists',
         )
 

@@ -27,3 +27,10 @@ class User(BaseModel):
     username: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]
     email: Mapped[str] = mapped_column(unique=True)
+
+
+@table_registry.mapped_as_dataclass
+class Author(BaseModel):
+    __tablename__ = 'authors'
+
+    name: Mapped[str] = mapped_column(unique=True)

@@ -36,3 +36,16 @@ class UserPublic(BaseModel):
     username: str
     email: EmailStr
     model_config = ConfigDict(from_attributes=True)
+
+
+class AuthorSchema(BaseModel):
+    name: Annotated[str, AfterValidator(sanitize_name)]
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AuthorPublic(AuthorSchema):
+    id: int
+
+
+class AuthorList(BaseModel):
+    authors: list[AuthorPublic]

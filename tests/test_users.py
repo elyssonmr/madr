@@ -25,7 +25,7 @@ def test_create_user_should_not_duplicate_user(client, user):
     user_schema = UserSchema.model_validate(user).model_dump()
     response = client.post('/accounts', json=user_schema)
 
-    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert response.status_code == HTTPStatus.CONFLICT
     assert response.json() == {'detail': 'Username already exists'}
 
 

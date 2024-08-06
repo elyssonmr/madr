@@ -11,7 +11,7 @@ from testcontainers.postgres import PostgresContainer
 from madr import security
 from madr.app import app
 from madr.database import get_session
-from madr.models import User, table_registry
+from madr.models import Author, User, table_registry
 
 
 class UserFactory(factory.Factory):
@@ -23,6 +23,13 @@ class UserFactory(factory.Factory):
     password = factory.LazyAttribute(
         lambda obj: security.get_password_hash(f'{obj.username}-passwd')
     )
+
+
+class AuthorFactory(factory.Factory):
+    class Meta:
+        model = Author
+
+    name = factory.Sequence(lambda n: f'author{n}')
 
 
 @pytest.fixture(scope='session')
@@ -67,6 +74,26 @@ async def user(session: AsyncSession):
     user.clean_password = password
 
     return user
+
+
+@pytest.fixture
+async def author(session: AsyncSession):
+    author = AuthorFactory()
+    session.add(author)
+    await session.commit()
+    await session.refresh(author)
+
+    return author
+
+
+@pytest.fixture
+async def other_author(session: AsyncSession):
+    author = AuthorFactory()
+    session.add(author)
+    await session.commit()
+    await session.refresh(author)
+
+    return author
 
 
 @pytest.fixture
