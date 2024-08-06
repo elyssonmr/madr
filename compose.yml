@@ -10,6 +10,16 @@ services:
       - 'POSTGRES_PASSWORD=madr_passwd'
     volumes:
       - pgdata:/var/lib/postgresql/data
+  madr:
+    image: madr
+    build: .
+    ports:
+      - '8000:8000'
+    environment:
+      - DATABASE_URL=postgresql+psycopg://madr:madr_passwd@madr_database:5432/madr
+    entrypoint: ["./entrypoint.sh"]
+    depends_on:
+      - madr_database
 
 volumes:
   pgdata:
